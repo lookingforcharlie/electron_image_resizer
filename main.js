@@ -44,6 +44,7 @@ app.whenReady().then(() => {
 
 // menu template
 const menu = [
+  ...(isMac ? [] : []),
   {
     role: 'fileMenu',
   },

@@ -1,6 +1,6 @@
 # Electron Desktop App
 
-- Electron, JavaScript
+- Electron, JavaScript, Toastify
 
 ## Development
 
