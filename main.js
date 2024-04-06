@@ -26,6 +26,19 @@ function createMainWindow() {
   // mainWindow.loadURL('https://meetxb.com');
 }
 
+// Create about window
+function createAboutWindow() {
+  const aboutWindow = new BrowserWindow({
+    title: 'About Image Resizer',
+    width: 300,
+    Height: 300,
+  });
+
+  // We don't need path to help here
+  // mainWindow.loadFile(path.join(__dirname, './renderer/index.html'));
+  aboutWindow.loadFile('./renderer/about.html');
+}
+
 // app is ready
 app.whenReady().then(() => {
   createMainWindow();
@@ -44,10 +57,37 @@ app.whenReady().then(() => {
 
 // menu template
 const menu = [
-  ...(isMac ? [] : []),
+  ...(isMac
+    ? [
+        {
+          label: app.name,
+          submenu: [
+            {
+              label: 'About',
+              click: () => createAboutWindow(),
+            },
+          ],
+        },
+      ]
+    : []),
   {
     role: 'fileMenu',
   },
+
+  // if it's not Mac or on Windows
+  ...(!isMac
+    ? [
+        {
+          label: 'Help',
+          submenu: [
+            {
+              label: 'About',
+              click: () => createAboutWindow(),
+            },
+          ],
+        },
+      ]
+    : []),
 ];
 
 // Another way to setup the menu template
