@@ -1,4 +1,6 @@
-// We can't do const os = require('os') here, we need preload.js to do that
+// We can't do const os = require('os') here, because renderer processes do not run node.js
+// main process has the full operating system access
+// we need preload.js to do that as the bridge
 // const os = require('os');
 
 const form = document.querySelector('#img-form');
@@ -29,6 +31,8 @@ function loadImage(e) {
   form.style.display = 'block';
   // get the file name and render on the page
   filename.innerText = file.name;
+
+  outputPath.innerText = path.join(os.homedir(), 'imageresizer');
 }
 
 // Make sure file is a image

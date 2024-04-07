@@ -1,6 +1,8 @@
 const { app, BrowserWindow, Menu } = require('electron');
 const path = require('path');
 
+const gitTester = 'April 7, 00:06';
+
 const isDev = process.env.NODE_ENV !== 'production';
 // This is true if you are on Mac
 const isMac = process.platform === 'darwin';
@@ -11,6 +13,11 @@ function createMainWindow() {
     title: 'Image Resizer',
     width: isDev ? 1000 : 500,
     Height: 600,
+    webPreferences: {
+      contextIsolation: true,
+      nodeIntegration: true,
+      preload: path.join(__dirname, 'preload.js'),
+    },
   });
 
   // Open devtools if in dev env
