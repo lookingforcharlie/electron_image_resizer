@@ -35,6 +35,38 @@ function loadImage(e) {
   outputPath.innerText = path.join(os.homedir(), 'imageresizer');
 }
 
+// Send image data th main
+function sendImage(e) {
+  e.preventDefault();
+
+  const width = widthInput.value;
+  const height = heightInput.value;
+  // In electron, it provides .path method for us to get the path of a file
+  const imgPath = img.files[0].path;
+
+  if (!img.files[0]) {
+    alertError('Please upload an image');
+    return;
+  }
+
+  if (width === '' || height === '') {
+    alertError('Please fill in a height and width');
+    return;
+  }
+
+  // Send to main using ipcRenderer
+  ipcRenderer.send('image:resize', {
+    imgPath,
+    width,
+    height,
+  });
+}
+
+// Catch the image:done event
+ipcRenderer.on('image:done', () => {
+  alertSuccess(`Image resized to ${widthInput.value} X ${heightInput.value}`);
+});
+
 // Make sure file is a image
 function isFileImage(file) {
   const acceptedImageTypes = ['image/gif', 'image/png', 'image/jpeg'];
@@ -48,8 +80,8 @@ function alertError(message) {
     duration: 4000,
     close: false, // won't have a close button
     style: {
-      background: 'pink',
       color: 'white',
+      background: 'pink',
       textAlign: 'center',
     },
   });
@@ -69,3 +101,4 @@ function alertSuccess(message) {
 }
 
 img.addEventListener('change', loadImage);
+form.addEventListener('submit', sendImage);
